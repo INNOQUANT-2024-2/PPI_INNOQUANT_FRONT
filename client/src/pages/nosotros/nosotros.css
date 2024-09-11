@@ -1,0 +1,11 @@
+.fondo-nosotros{
+    background-image: linear-gradient(180deg, #0000008c 0%, #0000008c 100% ), url('../../assets/hero_nosotros.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.img-mats{
+    background-image: linear-gradient(180deg, #0000008c 0%, #0000008c 100% ), url('../../assets/img-mats.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
