@@ -55,6 +55,7 @@ const UserList = () => {
   const handleEditUser = (user) => {
     setEditingUser(user);
     setNewUser({
+      identificacion_usu: user.IDENTIFICACION_USU,
       nombre_usu: user.NOMBRE_USU,
       apellido1_usu: user.APELLIDO1_USU,
       apellido2_usu: user.APELLIDO2_USU,
@@ -68,6 +69,7 @@ const UserList = () => {
       await axios.put(`http://localhost:3000/api/users/${editingUser.ID_USU}`, newUser);
       setEditingUser(null);
       setNewUser({
+        identificacion_usu: '',
         nombre_usu: '',
         apellido1_usu: '',
         apellido2_usu: '',
@@ -85,6 +87,14 @@ const UserList = () => {
       <h1 className="text-2xl mb-4">Usuarios</h1>
       <div className="mb-4">
        
+        <input
+          type="text"
+          name="identificacion_usu"
+          placeholder="Identificacion"
+          value={newUser.identificacion_usu}
+          onChange={handleInputChange}
+          className="border p-2 mr-2"
+        />
         <input
           type="text"
           name="nombre_usu"
@@ -139,6 +149,7 @@ const UserList = () => {
         <thead>
           <tr>
             <th className="border p-2">ID</th>
+            <th className="border p-2">Identificacion</th>
             <th className="border p-2">Nombre</th>
             <th className="border p-2">Apellido 1</th>
             <th className="border p-2">Apellido 2</th>
@@ -151,6 +162,7 @@ const UserList = () => {
             users.map(user => (
               <tr key={user.ID_USU}>
                 <td className="border p-2">{user.ID_USU}</td>
+                <td className="border p-2">{user.IDENTIFICACION_USU}</td>
                 <td className="border p-2">{user.NOMBRE_USU}</td>
                 <td className="border p-2">{user.APELLIDO1_USU}</td>
                 <td className="border p-2">{user.APELLIDO2_USU}</td>
