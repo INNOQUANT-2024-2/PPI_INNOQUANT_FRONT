@@ -13,6 +13,7 @@ function ContextProvider ({children}){
     const formData = new FormData(form);
 
     const datos = {
+      identificacion_usu: formData.get("identificacion_usu"),
       nombre_usu: formData.get("nombre_usu"),
       apellido1_usu: formData.get("apellido1_usu"),
       apellido2_usu: formData.get("apellido2_usu") || "",
