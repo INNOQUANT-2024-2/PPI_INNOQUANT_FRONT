@@ -58,7 +58,7 @@ function ContextProvider ({children}){
     const formData = new FormData(form);
   
     const datos = {
-      nombre_usu: formData.get("nombre_usu"),
+      identificacion_usu: formData.get("identificacion_usu"),
       contra_usu: formData.get("contra_usu"),
     };
   
@@ -85,7 +85,7 @@ function ContextProvider ({children}){
       }
   
       const data = await response.json();
-      console.log("Respuesta recibida:", data);
+      console.log("Respuesta recibida:", data,24);
   
       setMessage(data.message);
       setIsRegister(true);

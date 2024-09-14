@@ -6,6 +6,7 @@ import { GlobalContext } from "../../context/globalContext";
 function login() {
   const { message, handleSubmitLogin, isRegister } = React.useContext(GlobalContext);
   console.log(isRegister)
+  
   const handleSubmitLogin2 = async (e) => {
     e.preventDefault();
     console.log("Formulario enviado, preventDefault ejecutado");
@@ -14,7 +15,7 @@ function login() {
     const formData = new FormData(form);
   
     const datos = {
-      nombre_usu: formData.get("nombre_usu"),
+      identificacion_usu: formData.get("identificacion_usu"),
       contra_usu: formData.get("contra_usu"),
     };
   
@@ -34,7 +35,7 @@ function login() {
       console.log("Respuesta del servidor:", response);
   
       if (!response.ok) {
-        setIsRegister(false);
+        isRegister(false);
         throw new Error(
           "Hubo un problema al realizar la petición: " + response.status
         );
@@ -83,7 +84,7 @@ function login() {
                           </label>
                           <input
                             type="text"
-                            name="nombre_usu"
+                            name="identificacion_usu"
                             id="email"
                             class="text-black sm:text-sm border-gray-500 block w-full p-1.5 border-b-2  focus:outline-none pl-0 "
                             placeholder="Nombre o correo electrónico*"
