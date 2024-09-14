@@ -12,6 +12,7 @@ function Nosotros() {
     const datos = {
       codigo_mat: formData.get("codigo_mat"),
       nombre_mat: formData.get("nombre_mat"),
+      cantidad_mat: formData.get("cantidad_mat"),
       precio_mat: formData.get("precio_mat")
     };
 
@@ -82,6 +83,17 @@ function Nosotros() {
                       <input
                         type="text"
                         name="nombre_mat"
+                        placeholder="Nombre del material"
+                        className="text-black sm:text-sm border-gray-500 block w-full p-1.5 border-b-2 focus:outline-none pl-0 mb-6" required
+                      />
+                    </div>
+                    <div className="input-dueño-proyect">
+                      <label className="block mb-2 text-sm font-medium text-black">
+                        Cantidad Material*
+                      </label>
+                      <input
+                        type="text"
+                        name="cantidad_mat"
                         placeholder="Nombre del material"
                         className="text-black sm:text-sm border-gray-500 block w-full p-1.5 border-b-2 focus:outline-none pl-0 mb-6" required
                       />
