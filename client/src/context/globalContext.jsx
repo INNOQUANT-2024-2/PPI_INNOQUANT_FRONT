@@ -22,7 +22,7 @@ function ContextProvider({ children }) {
       rol_usu: formData.get("rol_usu"),
     };
 
-    const url = "http://localhost:3000/api/users";
+    const url = "http://localhost:3002/api/users";
 
     try {
       const response = await fetch(url, {
@@ -63,7 +63,7 @@ function ContextProvider({ children }) {
 
     console.log("Datos del formulario que se envían:", datos); // Asegúrate de que estos datos sean correctos
 
-    const url = "http://localhost:3000/api/usersLogin";
+    const url = "http://localhost:3002/api/usersLogin";
 
     try {
       const response = await fetch(url, {
@@ -83,7 +83,7 @@ function ContextProvider({ children }) {
 
         setMessage(data.message); // Mensaje en caso de éxito
         setIsRegister(true); // Cambia el estado de registro
-        window.location.href = "/inicio"; // Redirigir a la página de inicio en caso de éxito
+       window.location.href = "/";  // Redirigir a la página de inicio en caso de éxito
       } else if (response.status === 400 || response.status === 401) {
         setIsRegister(false);
         setMessage("Identificación o contraseña incorrecta");

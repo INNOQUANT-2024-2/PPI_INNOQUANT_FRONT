@@ -17,7 +17,7 @@ const ProjectList = () => {
 
   const fetchProjects = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/projects');
+      const res = await axios.get('http://localhost:3002/api/projects');
       console.log('Response from API:', res.data); // Verificar la respuesta de la API
       setProjects(Array.isArray(res.data) ? res.data : []); // Asegura que la respuesta sea un arreglo
     } catch (error) {

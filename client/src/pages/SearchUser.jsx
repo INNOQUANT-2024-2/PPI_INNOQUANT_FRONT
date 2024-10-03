@@ -8,7 +8,7 @@ const SearchUser = () => {
   const handleSearch = async () => {
     try {
       console.log(`Searching for: ${searchTerm}`);
-      const res = await axios.get(`http://localhost:3000/api/users/search?nombre_usu=${searchTerm}`);
+      const res = await axios.get(`http://localhost:3002/api/users/search?nombre_usu=${searchTerm}`);
       console.log('Search result:', res.data);
       setSearchResult(res.data);
     } catch (error) {

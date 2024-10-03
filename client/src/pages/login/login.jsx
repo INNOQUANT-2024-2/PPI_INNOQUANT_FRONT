@@ -4,9 +4,9 @@ import { GlobalContext } from "../../context/globalContext";
 
 function Login() {
   const { handleSubmitLogin, isRegister, message } = React.useContext(GlobalContext);
-  const [errorMessage, setErrorMessage] = useState(""); // Para el manejo de errores
+/*   const [errorMessage, setErrorMessage] = useState(""); */ // Para el manejo de errores
 
-  const handleSubmitLogin2 = async (e) => {
+/*   const handleSubmitLogin2 = async (e) => {
     e.preventDefault();
     setErrorMessage(""); // Limpiar cualquier mensaje de error previo
 
@@ -18,15 +18,20 @@ function Login() {
       contra_usu: formData.get("contra_usu"),
     };
 
+    console.log(datos, 23)
+    
+
     try {
       const response = await handleSubmitLogin(datos); // Usamos la función del contexto
+      console.log(response, 25)
       if (!response.ok) {
         setErrorMessage("Identificación o contraseña incorrecta"); // Mostrar mensaje de error si la respuesta no es exitosa
       }
     } catch (error) {
       setErrorMessage("Ocurrió un error al intentar iniciar sesión"); // Mostrar mensaje de error general
+      console.log(error)
     }
-  };
+  }; */
 
   return (
     <div className="ppal-login w-full">
@@ -45,10 +50,10 @@ function Login() {
                         Iniciar Sesión
                       </h1>
 
-                      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>} {/* Mostrar mensaje de error */}
-                      {isRegister && <p>{message}</p>} {/* Mostrar mensaje de éxito si se ha registrado correctamente */}
+                      {/* {message && <p style={{ color: 'red' }}>{message}</p>} */} {/* Mostrar mensaje de error */}
+                      {!isRegister && <p style={{color: 'red'}}>{message}</p>} {/* Mostrar mensaje de éxito si se ha registrado correctamente */}
 
-                      <form className="space-y-4 md:space-y-6" onSubmit={handleSubmitLogin2}>
+                      <form className="space-y-4 md:space-y-6" onSubmit={handleSubmitLogin}>
                         <div>
                           <label htmlFor="identificacion_usu" className="block mb-1 text-sm font-medium text-black">
                             Nombre Usuario
@@ -77,6 +82,7 @@ function Login() {
                           <button
                             type="submit"
                             className="w-[80%] text-white bg-[#171824] font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:shadow-2xl"
+                            
                           >
                             Ingresar
                           </button>

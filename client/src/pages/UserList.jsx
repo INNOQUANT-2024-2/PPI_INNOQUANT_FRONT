@@ -20,7 +20,7 @@ const UserList = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/users');
+      const res = await axios.get('http://localhost:3002/api/users');
       console.log('Response from API:', res.data); // Verificar la respuesta de la API
       setUsers(Array.isArray(res.data) ? res.data : []); // Asegura que la respuesta sea un arreglo
     } catch (error) {
@@ -37,6 +37,15 @@ const UserList = () => {
   const handleCreateUser = async () => {
     try {
       await axios.post('http://localhost:3000/api/users', newUser);
+      // Limpiar el formulario después de crear el usuario
+      setNewUser({
+        identificacion_usu: '',
+        nombre_usu: '',
+        apellido1_usu: '',
+        apellido2_usu: '',
+        rol_usu: '',
+        contra_usu: ''
+      });
       fetchUsers();
     } catch (error) {
       console.error('Error creating user:', error);

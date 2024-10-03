@@ -20,7 +20,7 @@ const MaterialsList = () => {
   // Función para obtener los materiales desde la API
   const fetchMaterials = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/materials');
+      const res = await axios.get('http://localhost:3002/api/materials');
       
       // Agrega este console.log para verificar la respuesta
       console.log('Datos recibidos desde la API:', res.data); 
