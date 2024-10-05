@@ -15,31 +15,36 @@ const MaterialsList = () => {
     fetchMaterials();
   }, []);
 
+  // Función para obtener los materiales desde la API
   const fetchMaterials = async () => {
     try {
       const res = await axios.get('http://localhost:3002/api/materials');
-      console.log('Response from API:', res.data); // Verificar la respuesta de la API
-      setMaterials(Array.isArray(res.data) ? res.data : []); // Asegura que la respuesta sea un arreglo
+      console.log('Response from API:', res.data);  // Verifica lo que está llegando aquí
+      console.log('Tipo de dato de la respuesta:', typeof res.data); // Verifica si es array
+      setMaterials(Array.isArray(res.data) ? res.data : []); // Si no es un array, deja un array vacío
     } catch (error) {
       console.error('Error fetching materials:', error);
       setMaterials([]); // En caso de error, asegura que materials sea un arreglo vacío
     }
   };
 
+  // Manejo del cambio de input
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewMaterial({ ...newMaterial, [name]: value });
   };
 
+  // Función para crear un nuevo material
   const handleCreateMaterial = async () => {
     try {
       await axios.post('http://localhost:3002/api/materials', newMaterial);
-      fetchMaterials();
+      fetchMaterials(); // Refrescar la lista después de crear un nuevo material
     } catch (error) {
       console.error('Error creating material:', error);
     }
   };
 
+  // Función para eliminar un material
   const handleDeleteMaterial = async (codigo_mat) => {
     try {
       await axios.delete(`http://localhost:3002/api/materials/${codigo_mat}`);
@@ -49,6 +54,7 @@ const MaterialsList = () => {
     }
   };
 
+  // Función para editar un material
   const handleEditMaterial = (material) => {
     setEditingMaterial(material);
     setNewMaterial({
@@ -58,8 +64,9 @@ const MaterialsList = () => {
     });
   };
 
+  // Función para actualizar un material
   const handleUpdateMaterial = async () => {
-    /* if (!editingMaterial) return;  */// Asegúrate de que haya un material en edición
+    if (!editingMaterial) return;  // Asegúrate de que haya un material en edición
 
     try {
       await axios.put(`http://localhost:3002/api/materials/${editingMaterial.codigo_mat}`, newMaterial);
@@ -124,8 +131,8 @@ const MaterialsList = () => {
         </thead>
         <tbody>
           {materials.length > 0 ? (
-            materials.map(material => (
-              <tr key={material.codigo_mat}>
+            materials.map((material, index) => (
+              <tr key={index}>
                 <td className="border p-2">{material.codigo_mat}</td>
                 <td className="border p-2">{material.nombre_mat}</td>
                 <td className="border p-2">{material.precio_mat}</td>

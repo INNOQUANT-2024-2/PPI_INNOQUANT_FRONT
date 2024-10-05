@@ -28,9 +28,29 @@ const Navbar = () => {
             <NavLink to="/">
               <li className="transition duration-300 ease-in-out hover:scale-110">Inicio</li>
             </NavLink>
-            <NavLink to="/materiales">
-              <li className="transition duration-300 ease-in-out hover:scale-110">Materiales</li>
-            </NavLink>
+
+            {/* Si el usuario no está logueado, mostrar la ruta pública de materiales */}
+            {!rol ? (
+              <NavLink to="/materiales-any">
+                <li className="transition duration-300 ease-in-out hover:scale-110">Materiales</li>
+              </NavLink>
+            ) : (
+              <>
+                {/* Si el usuario es cliente */}
+                {rol === "2" && (
+                  <NavLink to="/materiales-client">
+                    <li className="transition duration-300 ease-in-out hover:scale-110">Materiales</li>
+                  </NavLink>
+                )}
+
+                {/* Si el usuario es arquitecto */}
+                {rol === "1" && (
+                  <NavLink to="/materiales-arq">
+                    <li className="transition duration-300 ease-in-out hover:scale-110">Materiales</li>
+                  </NavLink>
+                )}
+              </>
+            )}
 
             {/* Verificar si el rol es arquitecto o no */}
             {rol === "1" ? (
@@ -43,9 +63,17 @@ const Navbar = () => {
               </NavLink>
             )}
 
-            <NavLink to="/proyectos">
-              <li className="transition duration-300 ease-in-out hover:scale-110">Proyectos</li>
-            </NavLink>
+            {/* Verificar si el usuario está logueado o no para mostrar la ruta de proyectos */}
+            {!rol ? (
+              <NavLink to="/proyectos-any">
+                <li className="transition duration-300 ease-in-out hover:scale-110">Proyectos</li>
+              </NavLink>
+            ) : (
+              <NavLink to="/proyectos">
+                <li className="transition duration-300 ease-in-out hover:scale-110">Proyectos</li>
+              </NavLink>
+            )}
+
             <NavLink to="/perfil">
               <li className="transition duration-300 ease-in-out hover:scale-110">Perfil</li>
             </NavLink>
@@ -73,9 +101,29 @@ const Navbar = () => {
           <NavLink to="/" onClick={toggleMenu}>
             <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Inicio</div>
           </NavLink>
-          <NavLink to="/materiales" onClick={toggleMenu}>
-            <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Materiales</div>
-          </NavLink>
+
+          {/* Si el usuario no está logueado, mostrar la ruta pública de materiales */}
+          {!rol ? (
+            <NavLink to="/materiales-any" onClick={toggleMenu}>
+              <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Materiales</div>
+            </NavLink>
+          ) : (
+            <>
+              {/* Si el usuario es cliente */}
+              {rol === "2" && (
+                <NavLink to="/materiales-client" onClick={toggleMenu}>
+                  <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Materiales</div>
+                </NavLink>
+              )}
+
+              {/* Si el usuario es arquitecto */}
+              {rol === "1" && (
+                <NavLink to="/materiales-arq" onClick={toggleMenu}>
+                  <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Materiales</div>
+                </NavLink>
+              )}
+            </>
+          )}
 
           {/* Verificar si el rol es arquitecto o no para pantallas pequeñas */}
           {rol === "1" ? (
@@ -88,9 +136,17 @@ const Navbar = () => {
             </NavLink>
           )}
 
-          <NavLink to="/proyectos" onClick={toggleMenu}>
-            <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Proyectos</div>
-          </NavLink>
+          {/* Verificar si el usuario está logueado o no para mostrar la ruta de proyectos */}
+          {!rol ? (
+            <NavLink to="/proyectos-any" onClick={toggleMenu}>
+              <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Proyectos</div>
+            </NavLink>
+          ) : (
+            <NavLink to="/proyectos" onClick={toggleMenu}>
+              <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Proyectos</div>
+            </NavLink>
+          )}
+
           <NavLink to="/perfil" onClick={toggleMenu}>
             <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Perfil</div>
           </NavLink>
