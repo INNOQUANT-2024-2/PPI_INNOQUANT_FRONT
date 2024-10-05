@@ -5,13 +5,15 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { FaUser } from "react-icons/fa";
 
 const Navbar = () => {
-  // Estado para controlar si el menú está abierto o cerrado
   const [menuOpen, setMenuOpen] = useState(false);
 
   // Función para alternar el estado del menú
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  // Obtener el rol del localStorage
+  const rol = localStorage.getItem("rol");
 
   return (
     <div className="ppal-navbar">
@@ -29,9 +31,18 @@ const Navbar = () => {
             <NavLink to="/materiales">
               <li className="transition duration-300 ease-in-out hover:scale-110">Materiales</li>
             </NavLink>
-            <NavLink to="/usuarios-any">
-              <li className="transition duration-300 ease-in-out hover:scale-110">Usuarios</li>
-            </NavLink>
+
+            {/* Verificar si el rol es arquitecto o no */}
+            {rol === "1" ? (
+              <NavLink to="/usuarios">
+                <li className="transition duration-300 ease-in-out hover:scale-110">Usuarios</li>
+              </NavLink>
+            ) : (
+              <NavLink to="/usuarios-any">
+                <li className="transition duration-300 ease-in-out hover:scale-110">Usuarios</li>
+              </NavLink>
+            )}
+
             <NavLink to="/proyectos">
               <li className="transition duration-300 ease-in-out hover:scale-110">Proyectos</li>
             </NavLink>
@@ -65,9 +76,18 @@ const Navbar = () => {
           <NavLink to="/materiales" onClick={toggleMenu}>
             <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Materiales</div>
           </NavLink>
-          <NavLink to="/usuarios-any" onClick={toggleMenu}>
-            <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Usuarios</div>
-          </NavLink>
+
+          {/* Verificar si el rol es arquitecto o no para pantallas pequeñas */}
+          {rol === "1" ? (
+            <NavLink to="/usuarios" onClick={toggleMenu}>
+              <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Usuarios</div>
+            </NavLink>
+          ) : (
+            <NavLink to="/usuarios-any" onClick={toggleMenu}>
+              <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Usuarios</div>
+            </NavLink>
+          )}
+
           <NavLink to="/proyectos" onClick={toggleMenu}>
             <div className="py-2 hover:scale-110 transition duration-300 ease-in-out w-full text-center">Proyectos</div>
           </NavLink>

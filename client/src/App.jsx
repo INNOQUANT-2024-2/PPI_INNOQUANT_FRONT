@@ -7,16 +7,15 @@ import Register from "./pages/register/register";
 import Nosotros from "./pages/nosotros/nosotros";
 import Servicios from "./pages/servicios/servicios";
 import Cotizacion from "./pages/cotizacion/cotizacion";
-import PerfilClient from "./pages/perfilClient"
-import UsuariosAnonimos from "./pages/usuariosAnonimo"
+import PerfilClient from "./pages/perfilClient";
+import UsuariosAnonimos from "./pages/usuariosAnonimo";
 import { ContextProvider } from "../src/context/globalContext";
-// import ProtectedRoute from "./pages/protectedRoute";  // Verificar que esté bien importado
+import ProtectedRoute from "./pages/protectedRoute";  // Importamos el componente de ruta protegida
 
 function Router() {
   let router = useRoutes([
     { path: "/", element: <Home /> },  // Ruta pública
     { path: "/usuarios-any", element: <UsuariosAnonimos /> },  // Ruta pública
-    { path: "/usuarios", element: <Contacto /> },  // Ruta pública
     { path: "/Login", element: <Login /> },  // Ruta pública
     { path: "/register", element: <Register /> },  // Ruta pública
     { path: "/materiales", element: <Nosotros /> },  // Ruta pública
@@ -24,8 +23,15 @@ function Router() {
     { path: "/cotizacion", element: <Cotizacion /> },  // Ruta pública
     { path: "/perfil", element: <PerfilClient /> },  // Ruta pública
 
-    // Ruta protegida para arquitectos
-    
+    // Ruta protegida solo para arquitectos (rol 1)
+    { 
+      path: "/usuarios", 
+      element: (
+        <ProtectedRoute allowedRoles={['1']}>  {/* Solo permite acceso si es arquitecto */}
+          <Contacto />  {/* Esta es la vista de "usuarios" */}
+        </ProtectedRoute>
+      )
+    },
   ]);
 
   return router;
