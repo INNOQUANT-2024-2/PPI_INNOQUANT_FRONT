@@ -16,7 +16,7 @@ function Nosotros() {
       precio_mat: formData.get("precio_mat")
     };
 
-    const url = "http://localhost:3000/api/materials";
+    const url = "http://localhost:3002/api/materials";
 
     try {
       const response = await fetch(url, {

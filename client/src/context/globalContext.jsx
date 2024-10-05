@@ -35,7 +35,9 @@ function ContextProvider({ children }) {
 
       if (!response.ok) {
         setIsRegister(false);
-        throw new Error("Hubo un problema al realizar la petición: " + response.status);
+        throw new Error(
+          "Hubo un problema al realizar la petición: " + response.status
+        );
       } else {
         setIsRegister(true);
         window.location.href = "/login"; // Redirigir al login después del registro exitoso
@@ -61,9 +63,9 @@ function ContextProvider({ children }) {
       contra_usu: formData.get("contra_usu"),
     };
 
-    console.log("Datos del formulario que se envían:", datos); // Asegúrate de que estos datos sean correctos
+    console.log("Datos del formulario que se envían:", datos);
 
-    const url = "http://localhost:3002/api/usersLogin";
+    const url = "http://localhost:3002/api/usersLogin"; // Ajusta la URL según tu backend
 
     try {
       const response = await fetch(url, {
@@ -77,13 +79,33 @@ function ContextProvider({ children }) {
       console.log("Respuesta del servidor:", response);
 
       // Verifica el código de respuesta
-      if (response.status === 200) {
-        const data = await response.json(); // Asegúrate de que esta línea sea después de la verificación de estado
+      if (response.ok) {
+        const data = await response.json();
         console.log("Respuesta JSON recibida:", data);
 
-        setMessage(data.message); // Mensaje en caso de éxito
-        setIsRegister(true); // Cambia el estado de registro
-       window.location.href = "/";  // Redirigir a la página de inicio en caso de éxito
+        // Guardar el token y los datos del usuario en localStorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("rol", data.user.rol_usu); // Guardar el rol del usuario
+        localStorage.setItem("identificacion", data.user.identificacion_usu); // Guardar la identificación
+        localStorage.setItem(
+          "nombre",
+          `${data.user.nombre_usu} ${data.user.apellido1_usu}`
+        ); // Guardar el nombre completo del usuario
+
+        // Mensaje y estado de éxito
+        setMessage("Inicio de sesión exitoso");
+        setIsRegister(true);
+
+        // Redirigir según el rol del usuario
+        if (data.user.rol_usu === 1) {
+          // Verifica si es un número (1 para arquitecto)
+          window.location.href = "/vista-arquitecto"; // Redirigir a la vista del arquitecto
+        } else if (data.user.rol_usu === 2) {
+          // Verifica si es un número (2 para cliente)
+          window.location.href = "/vista-cliente"; // Redirigir a la vista del cliente
+        } else {
+          window.location.href = "/perfil"; // Redirigir al home si no hay rol específico
+        }
       } else if (response.status === 400 || response.status === 401) {
         setIsRegister(false);
         setMessage("Identificación o contraseña incorrecta");
@@ -96,7 +118,7 @@ function ContextProvider({ children }) {
       setIsRegister(false);
       setMessage("Error al realizar la petición.");
     }
-};
+  };
 
   return (
     <GlobalContext.Provider

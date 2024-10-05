@@ -6,88 +6,67 @@ const MaterialsList = () => {
   const [newMaterial, setNewMaterial] = useState({
     codigo_mat: '',
     nombre_mat: '',
-    cantidad_mat: '',
     precio_mat: ''
   });
   
   const [editingMaterial, setEditingMaterial] = useState(null);
 
-  // Se ejecuta al montar el componente
   useEffect(() => {
     fetchMaterials();
   }, []);
 
-  // Función para obtener los materiales desde la API
   const fetchMaterials = async () => {
     try {
       const res = await axios.get('http://localhost:3002/api/materials');
-      
-      // Agrega este console.log para verificar la respuesta
-      console.log('Datos recibidos desde la API:', res.data); 
-
-      // Asegúrate de que la respuesta sea un array antes de guardarla en el estado
-      setMaterials(Array.isArray(res.data) ? res.data : []);
+      console.log('Response from API:', res.data); // Verificar la respuesta de la API
+      setMaterials(Array.isArray(res.data) ? res.data : []); // Asegura que la respuesta sea un arreglo
     } catch (error) {
       console.error('Error fetching materials:', error);
-      setMaterials([]); // Si hay error, asegúrate de que materials sea un arreglo vacío
+      setMaterials([]); // En caso de error, asegura que materials sea un arreglo vacío
     }
   };
 
-  // Manejo del cambio de input
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewMaterial({ ...newMaterial, [name]: value });
   };
 
-  // Función para crear un nuevo material
   const handleCreateMaterial = async () => {
     try {
-      // Asegúrate de que los campos estén completos
-      if (!newMaterial.codigo_mat || !newMaterial.nombre_mat || !newMaterial.cantidad_mat || !newMaterial.precio_mat) {
-        alert('Todos los campos son obligatorios.');
-        return;
-      }
-
-      await axios.post('http://localhost:3000/api/materials', newMaterial);
-      setNewMaterial({ codigo_mat: '', nombre_mat: '', cantidad_mat: '', precio_mat: '' }); // Limpiar el formulario
-      fetchMaterials(); // Volver a cargar los materiales
+      await axios.post('http://localhost:3002/api/materials', newMaterial);
+      fetchMaterials();
     } catch (error) {
       console.error('Error creating material:', error);
     }
   };
 
-  // Función para eliminar un material
   const handleDeleteMaterial = async (codigo_mat) => {
     try {
-      await axios.delete(`http://localhost:3000/api/materials/${codigo_mat}`);
+      await axios.delete(`http://localhost:3002/api/materials/${codigo_mat}`);
       fetchMaterials();
     } catch (error) {
       console.error('Error deleting material:', error);
     }
   };
 
-  // Función para editar un material
   const handleEditMaterial = (material) => {
     setEditingMaterial(material);
     setNewMaterial({
       codigo_mat: material.codigo_mat,
       nombre_mat: material.nombre_mat,
-      cantidad_mat: material.cantidad_mat,
       precio_mat: material.precio_mat
     });
   };
 
-  // Función para actualizar un material
   const handleUpdateMaterial = async () => {
-    if (!editingMaterial) return;  // Asegúrate de que haya un material en edición
+    /* if (!editingMaterial) return;  */// Asegúrate de que haya un material en edición
 
     try {
-      await axios.put(`http://localhost:3000/api/materials/${editingMaterial.codigo_mat}`, newMaterial);
+      await axios.put(`http://localhost:3002/api/materials/${editingMaterial.codigo_mat}`, newMaterial);
       setEditingMaterial(null);
       setNewMaterial({
         codigo_mat: '',
         nombre_mat: '',
-        cantidad_mat: '',
         precio_mat: ''
       });
       fetchMaterials();
@@ -118,14 +97,6 @@ const MaterialsList = () => {
         />
         <input
           type="text"
-          name="cantidad_mat"
-          placeholder="Cantidad del Material"
-          value={newMaterial.cantidad_mat}
-          onChange={handleInputChange}
-          className="border p-2 mr-2"
-        />
-        <input
-          type="text"
           name="precio_mat"
           placeholder="Precio del Material"
           value={newMaterial.precio_mat}
@@ -147,30 +118,22 @@ const MaterialsList = () => {
           <tr>
             <th className="border p-2">Código</th>
             <th className="border p-2">Nombre</th>
-            <th className="border p-2">Cantidad</th>
             <th className="border p-2">Precio</th>
             <th className="border p-2">Acciones</th>
           </tr>
         </thead>
         <tbody>
           {materials.length > 0 ? (
-            materials.map((material) => (
+            materials.map(material => (
               <tr key={material.codigo_mat}>
                 <td className="border p-2">{material.codigo_mat}</td>
                 <td className="border p-2">{material.nombre_mat}</td>
-                <td className="border p-2">{material.cantidad_mat}</td>
                 <td className="border p-2">{material.precio_mat}</td>
                 <td className="border p-2">
-                  <button
-                    onClick={() => handleEditMaterial(material)}
-                    className="bg-yellow-500 text-white p-2 mr-2"
-                  >
+                  <button onClick={() => handleEditMaterial(material)} className="bg-yellow-500 text-white p-2 mr-2">
                     Editar
                   </button>
-                  <button
-                    onClick={() => handleDeleteMaterial(material.codigo_mat)}
-                    className="bg-red-500 text-white p-2"
-                  >
+                  <button onClick={() => handleDeleteMaterial(material.codigo_mat)} className="bg-red-500 text-white p-2">
                     Eliminar
                   </button>
                 </td>
@@ -178,9 +141,7 @@ const MaterialsList = () => {
             ))
           ) : (
             <tr>
-              <td colSpan={5} className="border p-2 text-center">
-                No hay materiales
-              </td>
+              <td colSpan={4} className="border p-2 text-center">No hay materiales</td>
             </tr>
           )}
         </tbody>
