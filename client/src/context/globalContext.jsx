@@ -33,20 +33,19 @@ function ContextProvider({ children }) {
         body: JSON.stringify(datos),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
         setIsRegister(false);
-        throw new Error(
-          "Hubo un problema al realizar la petición: " + response.status
-        );
+        setMessage(data.message || "Error al registrar el usuario.");
       } else {
         setIsRegister(true);
+        setMessage("Usuario registrado con éxito.");
         window.location.href = "/login"; // Redirigir al login después del registro exitoso
       }
-
-      const data = await response.json();
-      setMessage(data.message);
     } catch (error) {
       console.error("Error al realizar la petición:", error);
+      setMessage("Hubo un problema al realizar la petición.");
     }
   };
 
@@ -98,13 +97,11 @@ function ContextProvider({ children }) {
 
         // Redirigir según el rol del usuario
         if (data.user.rol_usu === 1) {
-          // Verifica si es un número (1 para arquitecto)
           window.location.href = "/vista-arquitecto"; // Redirigir a la vista del arquitecto
         } else if (data.user.rol_usu === 2) {
-          // Verifica si es un número (2 para cliente)
           window.location.href = "/vista-cliente"; // Redirigir a la vista del cliente
         } else {
-          window.location.href = "/perfil"; // Redirigir al home si no hay rol específico
+          window.location.href = "/perfil"; // Redirigir al perfil si no hay rol específico
         }
       } else if (response.status === 400 || response.status === 401) {
         setIsRegister(false);

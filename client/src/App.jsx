@@ -13,7 +13,7 @@ import MaterialesAnonimo from "./pages/materiales/materialesAnonimo";
 import MaterialesClient from "./pages/materiales/materialesClient";
 import ProyectoAnonimo from "./pages/proyectoAnonimo";
 import { ContextProvider } from "../src/context/globalContext";
-import ProtectedRoute from "./pages/protectedRoute";  // Importamos el componente de ruta protegida
+import ProtectedRoute from "./pages/protectedRoute";  
 
 function Router() {
   let router = useRoutes([
@@ -60,6 +60,7 @@ function Router() {
       path: "/proyectos", 
       element: (
         <ProtectedRoute allowedRoles={['1', '2']}>  
+          <Servicios/>
         </ProtectedRoute>
       )
     },

@@ -8,8 +8,8 @@ const MaterialsList = () => {
     nombre_mat: '',
     precio_mat: ''
   });
-  
   const [editingMaterial, setEditingMaterial] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     fetchMaterials();
@@ -19,12 +19,11 @@ const MaterialsList = () => {
   const fetchMaterials = async () => {
     try {
       const res = await axios.get('http://localhost:3002/api/materials');
-      console.log('Response from API:', res.data);  // Verifica lo que está llegando aquí
-      console.log('Tipo de dato de la respuesta:', typeof res.data); // Verifica si es array
-      setMaterials(Array.isArray(res.data) ? res.data : []); // Si no es un array, deja un array vacío
+      console.log('Response from API:', res.data); // Verificar la respuesta de la API
+      setMaterials(Array.isArray(res.data) ? res.data : []); // Asegura que la respuesta sea un arreglo
     } catch (error) {
       console.error('Error fetching materials:', error);
-      setMaterials([]); // En caso de error, asegura que materials sea un arreglo vacío
+      setMaterials([]);
     }
   };
 
@@ -39,18 +38,45 @@ const MaterialsList = () => {
     try {
       await axios.post('http://localhost:3002/api/materials', newMaterial);
       fetchMaterials(); // Refrescar la lista después de crear un nuevo material
+      setNewMaterial({
+        codigo_mat: '',
+        nombre_mat: '',
+        precio_mat: ''
+      });
+      setErrorMessage(''); // Limpiar mensajes de error previos
     } catch (error) {
       console.error('Error creating material:', error);
+      if (error.response && error.response.data && error.response.data.mensaje) {
+        setErrorMessage(error.response.data.mensaje);
+      } else {
+        setErrorMessage('Error al crear el material. Intente de nuevo.');
+      }
     }
   };
 
-  // Función para eliminar un material
+  // Función para eliminar un material con confirmación
   const handleDeleteMaterial = async (codigo_mat) => {
+    if (!codigo_mat) {
+      console.error("El código del material es undefined. No se puede eliminar.");
+      setErrorMessage("No se puede eliminar el material: código no válido.");
+      return;
+    }
+
+    const confirmed = window.confirm(`¿Estás seguro de eliminar el material con código: ${codigo_mat}?`);
+    if (!confirmed) return;
+
     try {
+      console.log("Intentando eliminar el material con código:", codigo_mat);
       await axios.delete(`http://localhost:3002/api/materials/${codigo_mat}`);
       fetchMaterials();
+      setErrorMessage(''); // Limpiar mensajes de error previos
     } catch (error) {
       console.error('Error deleting material:', error);
+      if (error.response && error.response.data && error.response.data.message) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage('Error al eliminar el material. Intente de nuevo.');
+      }
     }
   };
 
@@ -66,7 +92,7 @@ const MaterialsList = () => {
 
   // Función para actualizar un material
   const handleUpdateMaterial = async () => {
-    if (!editingMaterial) return;  // Asegúrate de que haya un material en edición
+    if (!editingMaterial) return;
 
     try {
       await axios.put(`http://localhost:3002/api/materials/${editingMaterial.codigo_mat}`, newMaterial);
@@ -77,14 +103,21 @@ const MaterialsList = () => {
         precio_mat: ''
       });
       fetchMaterials();
+      setErrorMessage(''); // Limpiar mensajes de error previos
     } catch (error) {
       console.error('Error updating material:', error);
+      if (error.response && error.response.data && error.response.data.message) {
+        setErrorMessage(error.response.data.message);
+      } else {
+        setErrorMessage('Error al actualizar el material. Intente de nuevo.');
+      }
     }
   };
 
   return (
     <div className="p-4">
       <h1 className="text-2xl mb-4">Materiales</h1>
+      {errorMessage && <div className="bg-red-200 text-red-800 p-2 rounded mb-4">{errorMessage}</div>}
       <div className="mb-4">
         <input
           type="text"

@@ -56,13 +56,13 @@ function Login() {
                       <form className="space-y-4 md:space-y-6" onSubmit={handleSubmitLogin}>
                         <div>
                           <label htmlFor="identificacion_usu" className="block mb-1 text-sm font-medium text-black">
-                            Identificacion
+                            Identificación
                           </label>
                           <input
                             type="text"
                             name="identificacion_usu"
                             className="text-black sm:text-sm border-gray-500 block w-full p-1.5 border-b-2 focus:outline-none pl-0"
-                            placeholder="Ingrese su identificaicon*"
+                            placeholder="Ingrese su identificación*"
                             required
                           />
                         </div>
