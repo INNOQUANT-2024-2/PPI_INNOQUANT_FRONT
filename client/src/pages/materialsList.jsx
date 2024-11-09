@@ -18,7 +18,7 @@ const MaterialsList = () => {
   // Función para obtener los materiales desde la API
   const fetchMaterials = async () => {
     try {
-      const res = await axios.get('http://localhost:3002/api/materials');
+      const res = await axios.get('/api/materials');
       console.log('Response from API:', res.data); // Verificar la respuesta de la API
       setMaterials(Array.isArray(res.data) ? res.data : []); // Asegura que la respuesta sea un arreglo
     } catch (error) {

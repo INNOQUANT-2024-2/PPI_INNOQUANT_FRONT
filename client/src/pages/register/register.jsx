@@ -109,7 +109,8 @@ function Register() {
                         <div className="flex justify-evenly">
                           <button
                             type="submit"
-                            className="w-[50%] text-white bg-[#171824] font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:shadow-2xl"
+                            className="w-[50%] text-white bg-[#171824] font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:shadow-2xl" 
+                            id="submit_register"
                           >
                             Crear
                           </button>
