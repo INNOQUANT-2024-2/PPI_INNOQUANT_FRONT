@@ -51,7 +51,7 @@ function Login() {
                       </h1>
 
                       {/* {message && <p style={{ color: 'red' }}>{message}</p>} */} {/* Mostrar mensaje de error */}
-                      {!isRegister && <p style={{color: 'red'}}>{message}</p>} {/* Mostrar mensaje de éxito si se ha registrado correctamente */}
+                      {!isRegister && <p id="mensaje_error" style={{color: 'red'}}>{message}</p>} {/* Mostrar mensaje de éxito si se ha registrado correctamente */}
 
                       <form className="space-y-4 md:space-y-6" onSubmit={handleSubmitLogin}>
                         <div>
