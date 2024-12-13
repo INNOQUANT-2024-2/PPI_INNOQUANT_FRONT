@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './nosotros.css';
 import MaterialsList from '../materialsList';
 
 function Nosotros() {
+
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleSubmitMat = async (e) => {
     e.preventDefault();
 
@@ -28,15 +32,22 @@ function Nosotros() {
       });
 
       if (!response.ok) {
-        throw new Error(
-          "Hubo un problema al realizar la petición: " + response.status
-        );
+        throw new Error("Hubo un problema al realizar la petición: " + response.status);
       }
 
       const data = await response.json();
       console.log("Respuesta recibida:", data);
+
+      // Si el material se crea exitosamente, mostrar un mensaje de éxito
+      setSuccessMessage("Material agregado exitosamente.");
+      setErrorMessage(''); // Limpiar mensaje de error
+
     } catch (error) {
       console.error("Error al realizar la petición:", error);
+
+      // Si ocurre un error, mostrar un mensaje de error
+      setSuccessMessage(''); // Limpiar mensaje de éxito
+      setErrorMessage('Error al agregar el material. Intenta nuevamente.');
     }
   };
 
@@ -63,6 +74,20 @@ function Nosotros() {
                   <h3 className="text-center font-bold text-[1.3rem] m-4">
                     MATERIALES
                   </h3>
+
+                  {/* Mostrar mensajes de éxito o error */}
+                  {successMessage && (
+                    <div className="bg-green-200 text-green-800 p-2 rounded mb-4">
+                      {successMessage}
+                    </div>
+                  )}
+
+                  {errorMessage && (
+                    <div className="bg-red-200 text-red-800 p-2 rounded mb-4">
+                      {errorMessage}
+                    </div>
+                  )}
+
                   <form onSubmit={handleSubmitMat}>
                     <div className="input-name-proyect">
                       <label className="block mb-2 text-sm font-medium text-black">
@@ -71,6 +96,7 @@ function Nosotros() {
                       <input
                         type="number"
                         name="codigo_mat"
+                        id="codigo_mat"
                         placeholder="Introduce el codigo del material"
                         className="text-black sm:text-sm border-gray-500 block w-full p-1.5 border-b-2 focus:outline-none pl-0 mb-6" required
                       />
@@ -83,6 +109,7 @@ function Nosotros() {
                       <input
                         type="text"
                         name="nombre_mat"
+                        id="nombre_mat"
                         placeholder="Nombre del material"
                         className="text-black sm:text-sm border-gray-500 block w-full p-1.5 border-b-2 focus:outline-none pl-0 mb-6" required
                       />
@@ -94,7 +121,8 @@ function Nosotros() {
                       <input
                         type="text"
                         name="cantidad_mat"
-                        placeholder="Nombre del material"
+                        id="cantidad_mat"
+                        placeholder="Cantidad del material"
                         className="text-black sm:text-sm border-gray-500 block w-full p-1.5 border-b-2 focus:outline-none pl-0 mb-6" required
                       />
                     </div>
@@ -106,6 +134,7 @@ function Nosotros() {
                       <input
                         type="number"
                         name="precio_mat"
+                        id="precio_mat"
                         placeholder="Precio del material en COP"
                         className="text-black sm:text-sm border-gray-500 block w-full p-1.5 border-b-2 focus:outline-none pl-0 mb-6" required
                       />
@@ -114,6 +143,7 @@ function Nosotros() {
                     <div className="flex justify-center m-5">
                       <button
                         type="submit"
+                        id="submit_create_material"
                         className="w-[35%] text-white bg-[#171824] font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-[#1a1c30] mt-5"
                       >
                         Agregar

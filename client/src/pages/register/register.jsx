@@ -21,11 +21,12 @@ function Register() {
                       {/* Mostrar mensaje de error si existe */}
                       {context.message && (
                         <div
-                          className={`p-2 rounded mb-4 ${
+                          className={`p-2 rounded mb-4 error-message ${
                             context.isRegister
                               ? "bg-green-200 text-green-800"
                               : "bg-red-200 text-red-800"
                           }`}
+                          id="mensaje_error_register"
                         >
                           {context.message}
                         </div>

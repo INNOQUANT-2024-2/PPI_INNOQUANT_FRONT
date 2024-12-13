@@ -37,17 +37,17 @@ const PerfilClient = () => {
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
         <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Perfil del Usuario</h1>
         <div className="flex flex-col items-center">
-          <div className="w-24 h-24 mb-4 rounded-full bg-blue-200 flex items-center justify-center text-3xl font-semibold text-white">
+          <div className="w-24 h-24 mb-4 rounded-full bg-blue-200 flex items-center justify-center text-3xl font-semibold text-white" id='circle_name'>
             {nombre && nombre.charAt(0)}
           </div>
           <p className="text-lg font-semibold text-gray-700 mb-2">
             <strong>Nombre:</strong> {nombre}
           </p>
-          <p className="text-lg text-gray-600 mb-2">
-            <strong>Identificación:</strong> {identificacion}
+          <p className="text-lg text-gray-600 mb-2" id='identificacion_perfil'>
+            <strong id='id_perfil'>Identificación:</strong> {identificacion}
           </p>
           <p className="text-lg text-gray-600">
-            <strong>Rol:</strong> {rol === '1' ? 'Arquitecto' : 'Cliente'}
+            <strong id='rol_perfil'>Rol:</strong> {rol === '1' ? 'Arquitecto' : 'Cliente'}
           </p>
           <button 
             onClick={handleLogout} 

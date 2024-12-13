@@ -3,9 +3,11 @@ import axios from 'axios';
 
 const MaterialsList = () => {
   const [materials, setMaterials] = useState([]);
+  const [successMessage, setSuccessMessage] = useState('');
   const [newMaterial, setNewMaterial] = useState({
     codigo_mat: '',
     nombre_mat: '',
+    cantidad_mat: '',
     precio_mat: ''
   });
   const [editingMaterial, setEditingMaterial] = useState(null);
@@ -41,9 +43,11 @@ const MaterialsList = () => {
       setNewMaterial({
         codigo_mat: '',
         nombre_mat: '',
+        cantidad_mat: '',
         precio_mat: ''
       });
       setErrorMessage(''); // Limpiar mensajes de error previos
+      setSuccessMessage('Material creado con éxito'); // Mensaje de éxito
     } catch (error) {
       console.error('Error creating material:', error);
       if (error.response && error.response.data && error.response.data.mensaje) {
@@ -86,6 +90,7 @@ const MaterialsList = () => {
     setNewMaterial({
       codigo_mat: material.codigo_mat,
       nombre_mat: material.nombre_mat,
+      cantidad_mat: material.cantidad_mat,
       precio_mat: material.precio_mat
     });
   };
@@ -100,6 +105,7 @@ const MaterialsList = () => {
       setNewMaterial({
         codigo_mat: '',
         nombre_mat: '',
+        cantidad_mat: '',
         precio_mat: ''
       });
       fetchMaterials();
@@ -122,6 +128,7 @@ const MaterialsList = () => {
         <input
           type="text"
           name="codigo_mat"
+          id="codigo_mat"
           placeholder="Código del Material"
           value={newMaterial.codigo_mat}
           onChange={handleInputChange}
@@ -130,6 +137,7 @@ const MaterialsList = () => {
         <input
           type="text"
           name="nombre_mat"
+          id="nombre_mat"
           placeholder="Nombre del Material"
           value={newMaterial.nombre_mat}
           onChange={handleInputChange}
@@ -137,12 +145,23 @@ const MaterialsList = () => {
         />
         <input
           type="text"
-          name="precio_mat"
+          name="cantidad_mat"
+          id="cantidad_mat"
           placeholder="Precio del Material"
           value={newMaterial.precio_mat}
           onChange={handleInputChange}
           className="border p-2 mr-2"
         />
+        <input
+          type="text"
+          name="precio_mat"
+          id="precio_mat"
+          placeholder="Precio del Material"
+          value={newMaterial.precio_mat}
+          onChange={handleInputChange}
+          className="border p-2 mr-2"
+        />
+        
         {editingMaterial ? (
           <button onClick={handleUpdateMaterial} className="bg-yellow-500 text-white p-2">
             Actualizar Material
@@ -168,6 +187,7 @@ const MaterialsList = () => {
               <tr key={index}>
                 <td className="border p-2">{material.codigo_mat}</td>
                 <td className="border p-2">{material.nombre_mat}</td>
+                <td className="border p-2">{material.cantidad_mat}</td>
                 <td className="border p-2">{material.precio_mat}</td>
                 <td className="border p-2">
                   <button onClick={() => handleEditMaterial(material)} className="bg-yellow-500 text-white p-2 mr-2">
