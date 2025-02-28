@@ -51,7 +51,7 @@ const PerfilClient = () => {
           </p>
           <button 
             onClick={handleLogout} 
-            className="mt-6 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+            className="mt-6 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded" id='boton_logout'>
             Cerrar Sesión
           </button>
         </div>
