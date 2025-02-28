@@ -2,10 +2,11 @@ import React from "react";
 
 let GlobalContext = React.createContext();
 
-function ContextProvider ({children}){
-  const [message, setMessage] =React.useState(""); 
+function ContextProvider({ children }) {
+  const [message, setMessage] = React.useState("");
   const [isRegister, setIsRegister] = React.useState(false);
 
+  // Manejo del registro de usuarios
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -21,7 +22,7 @@ function ContextProvider ({children}){
       rol_usu: formData.get("rol_usu"),
     };
 
-    const url = "http://localhost:3000/api/users";
+    const url = "http://localhost:3002/api/users";
 
     try {
       const response = await fetch(url, {
@@ -31,41 +32,40 @@ function ContextProvider ({children}){
         },
         body: JSON.stringify(datos),
       });
-      
-      if (!response.ok) { 
-       setIsRegister(false)
-        throw new Error(
-          "Hubo un problema al realizar la petición: " + response.status
-        );
-      }else{
-       setIsRegister(true);
-       window.location.href = "/login";
-      }
-      
+
       const data = await response.json();
-      console.log("Respuesta recibida:", data);
-      console.log("Respuesta recibida:", setMessage(data.message));
+
+      if (!response.ok) {
+        setIsRegister(false);
+        setMessage(data.message || "Error al registrar el usuario.");
+      } else {
+        setIsRegister(true);
+        setMessage("Usuario registrado con éxito.");
+        window.location.href = "/login"; // Redirigir al login después del registro exitoso
+      }
     } catch (error) {
       console.error("Error al realizar la petición:", error);
+      setMessage("Hubo un problema al realizar la petición.");
     }
   };
 
+  // Manejo del login
   const handleSubmitLogin = async (e) => {
     e.preventDefault();
     console.log("Formulario enviado, preventDefault ejecutado");
-  
+
     const form = e.target;
     const formData = new FormData(form);
-  
+
     const datos = {
-      nombre_usu: formData.get("nombre_usu"),
+      identificacion_usu: formData.get("identificacion_usu"),
       contra_usu: formData.get("contra_usu"),
     };
-  
-    console.log("Datos del formulario:", datos);
-  
-    const url = "http://localhost:3000/api/usersLogin";
-  
+
+    console.log("Datos del formulario que se envían:", datos);
+
+    const url = "http://localhost:3002/api/usersLogin"; // Ajusta la URL según tu backend
+
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -74,34 +74,63 @@ function ContextProvider ({children}){
         },
         body: JSON.stringify(datos),
       });
-  
+
       console.log("Respuesta del servidor:", response);
-  
-      if (!response.ok) {
+
+      // Verifica el código de respuesta
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Respuesta JSON recibida:", data);
+
+        // Guardar el token y los datos del usuario en localStorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("rol", data.user.rol_usu); // Guardar el rol del usuario
+        localStorage.setItem("identificacion", data.user.identificacion_usu); // Guardar la identificación
+        localStorage.setItem(
+          "nombre",
+          `${data.user.nombre_usu} ${data.user.apellido1_usu}`
+        ); // Guardar el nombre completo del usuario
+
+        // Mensaje y estado de éxito
+        setMessage("Inicio de sesión exitoso");
+        setIsRegister(true);
+
+        // Redirigir según el rol del usuario
+        if (data.user.rol_usu === 1) {
+          window.location.href = "/vista-arquitecto"; // Redirigir a la vista del arquitecto
+        } else if (data.user.rol_usu === 2) {
+          window.location.href = "/vista-cliente"; // Redirigir a la vista del cliente
+        } else {
+          window.location.href = "/perfil"; // Redirigir al perfil si no hay rol específico
+        }
+      } else if (response.status === 400 || response.status === 401) {
         setIsRegister(false);
-        throw new Error(
-          "Hubo un problema al realizar la petición: " + response.status
-        );
+        setMessage("Identificación o contraseña incorrecta");
+      } else {
+        setIsRegister(false);
+        setMessage("Hubo un problema al iniciar sesión, inténtalo de nuevo.");
       }
-  
-      const data = await response.json();
-      console.log("Respuesta recibida:", data);
-  
-      setMessage(data.message);
-      setIsRegister(true);
-      window.location.href = "/login";
     } catch (error) {
       console.error("Error al realizar la petición:", error);
+      setIsRegister(false);
+      setMessage("Error al realizar la petición.");
     }
   };
-  
-  console.log(isRegister, 23)
-  
+
   return (
-    <GlobalContext.Provider value={{message, setMessage, isRegister, setIsRegister, handleSubmit, handleSubmitLogin}}>
+    <GlobalContext.Provider
+      value={{
+        message,
+        setMessage,
+        isRegister,
+        setIsRegister,
+        handleSubmit,
+        handleSubmitLogin,
+      }}
+    >
       {children}
     </GlobalContext.Provider>
   );
 }
 
-export {GlobalContext, ContextProvider};
+export { GlobalContext, ContextProvider };
